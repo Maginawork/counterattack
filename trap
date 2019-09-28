@@ -1,0 +1,12 @@
+～～～～～～～～～～～～～～～～～～～～～
+func (s *Server) readKeyAndValue(r *bufio.Reader)(string,[]byte,error){
+k := make([]byte,klen)
+_,e = r.Read(k)
+...
+}
+问题问题，数据可能没有到达或者只到达了一部分，这样读就会出问题
+
+k := make([]byte, klen)
+_, e = io.ReadFull(r, k)
+这样就没问题了，一定会读取klen长的数据，不够的话会堵塞等待。EOF的会，如果长度不够会ErrUnexpectedEOF错误。
+
