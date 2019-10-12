@@ -9,4 +9,30 @@ _,e = r.Read(k)
 k := make([]byte, klen)
 _, e = io.ReadFull(r, k)
 这样就没问题了，一定会读取klen长的数据，不够的话会堵塞等待。EOF的会，如果长度不够会ErrUnexpectedEOF错误。
+～～～～～～～～～～～～～～～～～～～～～～
+redis
+60 us/req
+
+纯内存做cache
+80 us/req
+
+rocksdb做cache （硬盘）
+100 us/req
+
+～～～～～～～～～～～～～～～～～～～～～～
+批量写入提升性能   （rocksdb）
+select{
+    case p:<-c:
+        count++
+        ...
+    case <-t.C:
+        ...
+}
+计数器到达100，或每1s批量写入
+性能有10%的提升
+90 us/req
+
+
+～～～～～～～
+
 
