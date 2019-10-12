@@ -2,7 +2,6 @@ package cache
 
 import (
 	"sync"
-	"errors"
 )
 
 type MemoryCache struct{
@@ -29,13 +28,8 @@ func (mc *MemoryCache) Get(k string) ([]byte,error){
 	mc.mutex.RLock()
 	defer mc.mutex.RUnlock()
 
-	v,isexist := mc.c[k]
+	return mc.c[k],nil
 
-	if isexist{
-		return v,nil
-	}else{
-		return v,errors.New("there is no key: " + k)
-	}
 
 }
 
